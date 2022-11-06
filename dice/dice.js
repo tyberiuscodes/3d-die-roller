@@ -5,6 +5,17 @@
 (function() {
 
     var randomStorage = [], useRandomStorage = true;
+    var pageCanvas = $t.id('canvas');
+    var canWidth = pageCanvas.style.width;
+    var canHeight = pageCanvas.style.height;
+    const encoder = new GIFEncoder(canWidth, canHeight);
+    encoder.setRepeat(1);
+    encoder.setDelay(500); // in milliseconds
+    encoder.start();
+
+    function generateGIFFrame(ctx){
+        encoder.addFrame(ctx);
+    }
 
     function createShape(vertices, faces, radius) {
         var cv = [], cf = [];
@@ -516,6 +527,7 @@
         if (this.running === threadid) {
             (function(t, tid) {
                 requestAnimationFrame(function() { t.__animate(tid); });
+                encoder.addFrame(function() { t.__animate(tid); });
             })(this, threadid);
         }
     };

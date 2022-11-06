@@ -33,6 +33,10 @@ function diceInitialize(container, w, h) {
 
     var box = new $t.dice.dieBox(canvas);
 
+    const encoder = new GIFEncoder(canvas.style.width, canvas.style.height);
+    encoder.setRepeat(1);
+    encoder.setDelay(0); // in milliseconds
+
     function showSelector() {
         infoDiv.style.display = 'none';
         selectorDiv.style.display = 'inline-block';
@@ -83,7 +87,10 @@ function diceInitialize(container, w, h) {
         var boost = Math.sqrt((2500 - timeInt) / 2500) * dist * 2;
         coords.x /= dist; coords.y /= dist;
 
-        box.rollDice(dieSet, coords, boost, beforeRoll, afterRoll);
+        encoder.start();
+        await box.rollDice(dieSet, coords, boost, beforeRoll, afterRoll);
+        encoder.finish();
+        encoder.download("download.gif");
     });
 
     $t.bind($t.id('throw'), ['mouseup', 'touchend', 'touchcancel'], function(ev) {
@@ -102,7 +109,10 @@ function diceInitialize(container, w, h) {
         var boost = (box.rnd() + 3) * dist;
         coords.x /= dist; coords.y /= dist;
 
-        box.rollDice(dieSet, coords, boost, beforeRoll, afterRoll);
+        encoder.start();
+        await box.rollDice(dieSet, coords, boost, beforeRoll, afterRoll);
+        encoder.finish();
+        encoder.download("download.gif");
     });
 
     $t.bind(container, ['mouseup', 'touchend', 'touchcancel'], function(ev) {
