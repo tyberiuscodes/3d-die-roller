@@ -1,0 +1,5 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home2/tanderson/public_html/
+    - /bin/cp -R dice $DEPLOYPATH
