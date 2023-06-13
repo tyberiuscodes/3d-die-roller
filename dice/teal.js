@@ -157,9 +157,9 @@ teal.rpc = function(params, resp) {
     ajax.onreadystatechange = function() {
         if (ajax.readyState === 4) {
             if (resp) {
-                resp(JSON.parse(ajax.responseText));
+                //resp(JSON.parse(ajax.responseText));
             } else {
-                ret = JSON.parse(ajax.responseText);
+                //ret = JSON.parse(ajax.responseText);
             }
         }
     };
