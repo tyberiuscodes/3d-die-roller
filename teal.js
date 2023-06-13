@@ -151,20 +151,28 @@ else {
     };
 }
 
-teal.rpc = function(params, resp) {
-    var ajax = new XMLHttpRequest(), ret;
-    ajax.open("post", 'f', resp ? true : false);
+teal.rpc = async function(params, resp) {
+    console.log("Params: ")
+    console.log(params)
+    var ajax = new XMLHttpRequest(), key = false;
+    ajax.open("post", 'random.php', true);
     ajax.onreadystatechange = function() {
-        if (ajax.readyState === 4) {
-            if (resp) {
-                resp(JSON.parse(ajax.responseText));
-            } else {
-                ret = JSON.parse(ajax.responseText);
-            }
+        
+        if (this.readyState === 4) {
+            console.log("here1")
+            //alert(JSON.stringify(this.responseText) + "!!!")
+            key = this.responseText;
         }
     };
     ajax.send(JSON.stringify(params));
-    return ret;
+   // console.log("Response: ")
+    //console.log(JSON.parse(ajax.responseText))
+    
+    let roc = new RandomOrgCore.RandomOrgClient(key);
+    //roc.generateDecimalFractions(params.n, 2);
+    //return JSON.parse(roc.generateDecimalFractions(params.n, 2));
+    let response = await roc.generateDecimalFractions(params.n, 2);
+    return response;
 };
 
 teal.uuid = function() {

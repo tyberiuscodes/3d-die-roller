@@ -676,10 +676,16 @@
 
     this.dieBox.prototype.rnd = function() {
         if (!randomStorage.length && useRandomStorage) {
+            //console.log("here")
             try {
                 var randomResponse = $t.rpc({ method: "random", n: 512 });
-                if (!randomResponse.error) {
-                    randomStorage = randomResponse.result.random.data;
+                console.log(typeof randomResponse)
+                console.log("Response: " + randomResponse)
+                //console.log("Error: " + randomResponse.error)
+                if (typeof randomResponse === 'object' //&& !randomResponse.error
+                ) {
+                    randomStorage = randomResponse;
+                    console.log("Response 2: " + randomStorage)
                 }
                 else {
                     useRandomStorage = false;
